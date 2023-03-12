@@ -1,4 +1,5 @@
 import { allCountries } from "./countries.js";
+import { fullCountries } from "./countries_data.js";
 // 💻 Ejercicios
 
 // Ejercicios: Nivel 1
@@ -253,23 +254,21 @@ console.log('=======================================');
 
 // Encuentre qué letra se utiliza muchas veces como inicial de un nombre de país del array de países (ej. Finland, Fiji, France etc)
 function getMostUsedInitial(element) {
-    let maxArr =  [];
-    const mostUsed = element.map(e => e[0])
-    maxArr.push(mostUsed);
+    let countryCounts = {};
 
-    console.log(maxArr)
+    element.forEach(element => {
+        const firstLetter = element.charAt(0).toLowerCase();
+        if(countryCounts[firstLetter]) {
+            countryCounts[firstLetter]++;
+        } else {
+            countryCounts[firstLetter] = 1;
+        }
+    });
 
-    const sumArr = maxArr.reduce((acc, cur) => {
-        
-    })
+    const mostCommonLetter = Object.keys(countryCounts).reduce((acc, cur) => countryCounts[acc] > countryCounts[cur] ? acc : cur);
 
-    // for(let i = 0; i < maxArr.length; i++) {
-    //     if(maxArr[i] === maxArr[i+1]){
-    //         console.log(maxArr[i])
-    //     }
-    // }
 
-    // return [maxArr, sum];
+    return `La inicial que más se repite es la '${mostCommonLetter.toUpperCase()}'. Se repite ${countryCounts["s"]} veces.`;
 }
 
 console.log(getMostUsedInitial(allCountries));
@@ -278,7 +277,35 @@ console.log(getMostUsedInitial(allCountries));
 console.log('=======================================');
 
 // Ejercicios: Nivel 3
+
 // Utiliza la información de los países, en la carpeta de datos. Ordena los países por nombre, por capital, por población
+// Ordenado por nombre:
+fullCountries.sort((a, b) => {
+    if(a.name < b.name) return -1;
+    if(a.name > b.name) return 1;
+    return 0;
+})
+
+console.log(fullCountries);
+
+// Ordenado por caputal
+fullCountries.sort((a, b) => {
+    if(a.capital < b.capital) return -1;
+    if(a.capital > b.capital) return 1;
+    return 0;
+})
+console.log(fullCountries);
+
+// Ordenado por población
+fullCountries.sort((a, b) => {
+    if(a.population < b.population) return -1;
+    if(a.population > b.population) return 1;
+    return 0;
+})
+console.log(fullCountries);
+
+
+
 
 // *** Encuentre las 10 lenguas más habladas:
 
