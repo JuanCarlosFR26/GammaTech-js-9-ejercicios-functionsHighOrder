@@ -292,7 +292,7 @@ console.log(fullCountries);
 fullCountries.sort((a, b) => {
     if(a.capital < b.capital) return -1;
     if(a.capital > b.capital) return 1;
-    return 0;
+    return 0;s
 })
 console.log(fullCountries);
 
@@ -304,7 +304,7 @@ fullCountries.sort((a, b) => {
 })
 console.log(fullCountries);
 
-
+console.log('=======================================');
 
 
 // *** Encuentre las 10 lenguas más habladas:
@@ -332,6 +332,29 @@ console.log(fullCountries);
 // {country: 'Arabic',count: 25},
 // ]```
 
+function mostSpokenLanguages(arr, num) {
+    const languages = arr.reduce((acc, country) => {
+        return acc.concat(country.languages);
+    }, []);
+
+    const languageCounts = languages.reduce((acc, language) => {
+        acc[language] = (acc[language] || 0) + 1;
+        return acc;
+    }, {});
+
+    const sortedLanguages = Object.keys(languageCounts).sort((a, b) => languageCounts[b] - languageCounts[a]);
+
+    return sortedLanguages.slice(0, num).reduce((acc, language) => {
+        acc[language] = languageCounts[language];
+        return acc;
+    }, {});
+}
+
+console.log(mostSpokenLanguages(fullCountries, 10));
+console.log(mostSpokenLanguages(fullCountries, 3));
+
+console.log('=======================================');
+
 // *** Utilice el archivo countries_data.js para crear una función que cree los diez países más poblados.
 
 // console.log(mostPopulatedCountries(countries, 10))
@@ -356,6 +379,18 @@ console.log(fullCountries);
 // {country: 'United States of America', population: 323947000}
 // ]
 // ```
+
+
+function mostPopulatedCountries(arr, num) {
+    let arrCountry = {}
+
+    
+
+    console.log(arrCountry)
+}
+
+console.log(mostPopulatedCountries(fullCountries, 10));
+console.log(mostPopulatedCountries(fullCountries, 3));
 
 // *** Intenta desarrollar un programa que calcule la medida de tendencia central de una muestra(mean, median, mode) y medida de la variabilidad(range, variance, standard deviation). Además de esas medidas, encuentre el mínimo, el máximo, el recuento, el porcentaje y la distribución de frecuencias de la muestra. Puede crear un objeto llamado estadísticas y crear todas las funciones que hacen cálculos estadísticos como método para el objeto estadísticas. Comprueba el resultado que aparece a continuación.
 
