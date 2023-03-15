@@ -279,30 +279,57 @@ console.log('=======================================');
 // Ejercicios: Nivel 3
 
 // Utiliza la información de los países, en la carpeta de datos. Ordena los países por nombre, por capital, por población
-// Ordenado por nombre:
-fullCountries.sort((a, b) => {
-    if(a.name < b.name) return -1;
-    if(a.name > b.name) return 1;
+// Ordenado por capital:
+
+const orderByCapital = fullCountries.sort((a, b) => {
+    const capitalsA = a.capital.toUpperCase();
+    const capitalsB = b.capital.toUpperCase();
+
+    if(capitalsA < capitalsB) {
+        return -1;
+    }
+
+    if(capitalsA > capitalsB) {
+        return 1;
+    }
+
+    return 0;
+});
+
+
+// Ordenado por nombre
+const orderbyName = fullCountries.sort((a, b) => {
+
+    const namesA = a.name.toUpperCase();
+    const namesB = b.name.toUpperCase();
+
+    if(namesA < namesB) {
+        return - 1;
+    }
+
+    if(namesA > namesB) {
+        return 1;
+    }
+
     return 0;
 })
 
-console.log(fullCountries);
-
-// Ordenado por caputal
-fullCountries.sort((a, b) => {
-    if(a.capital < b.capital) return -1;
-    if(a.capital > b.capital) return 1;
-    return 0;s
-})
-console.log(fullCountries);
 
 // Ordenado por población
-fullCountries.sort((a, b) => {
-    if(a.population < b.population) return -1;
-    if(a.population > b.population) return 1;
+const orderByPopulation = fullCountries.sort((a, b) => {
+    const populationA = a.population;
+    const populationB = b.population;
+
+    if(populationA < populationB) {
+        return -1;
+    }
+
+    if(populationA > populationB) {
+        return 1;
+    }
+
     return 0;
 })
-console.log(fullCountries);
 
 console.log('=======================================');
 
@@ -380,20 +407,40 @@ console.log('=======================================');
 // ]
 // ```
 
-
 function mostPopulatedCountries(arr, num) {
-    let arrCountry = {}
 
-    
+    let arrCount = Object.entries(arr)
 
-    console.log(arrCountry)
+    let newArr = [];
+
+      for(const [key, value] of arrCount) {
+          newArr.push([value.name, value.population])
+      }
+
+    newArr.sort((a, b) => {
+        const populationA = a.population;
+        const populationB = b.population;
+
+        if(populationA < populationB) {
+            return 1;
+        }
+
+        if(populationA > populationB) {
+            return -1;
+        }
+
+        return 0;
+    })
+
+    return newArr.reverse().slice(0, num);
+
+
 }
 
 console.log(mostPopulatedCountries(fullCountries, 10));
 console.log(mostPopulatedCountries(fullCountries, 3));
 
 // *** Intenta desarrollar un programa que calcule la medida de tendencia central de una muestra(mean, median, mode) y medida de la variabilidad(range, variance, standard deviation). Además de esas medidas, encuentre el mínimo, el máximo, el recuento, el porcentaje y la distribución de frecuencias de la muestra. Puede crear un objeto llamado estadísticas y crear todas las funciones que hacen cálculos estadísticos como método para el objeto estadísticas. Comprueba el resultado que aparece a continuación.
-
 // const ages = [31, 26, 34, 37, 27, 26, 32, 32, 26, 27, 27, 24, 32, 33, 27, 25, 26, 38, 37, 31, 34, 24, 33, 29, 26]
 
 // console.log('Count:', statistics.count()) // 25
@@ -420,3 +467,122 @@ console.log(mostPopulatedCountries(fullCountries, 3));
 // Variance:  17.5
 // Standard Deviation:  4.2
 // Frequency Distribution: [(20.0, 26), (16.0, 27), (12.0, 32), (8.0, 37), (8.0, 3
+
+const ages = [31, 26, 34, 37, 27, 26, 32, 32, 26, 27, 27, 24, 32, 33, 27, 25, 26, 38, 37, 31, 34, 24, 33, 29, 26];
+
+console.log(ages.sort())
+
+const statistics = {
+    count: function(ages) {
+        return ages.length;
+    },
+
+    sum: function(ages) {
+        let sum = 0;
+        for (const age of ages) {
+            sum += age;
+        }
+        return sum;
+    },
+
+    min: function(ages) {
+        ages.sort()
+        return ages[0];
+    },
+
+    max: function(ages) {
+        ages.sort();
+        return ages[ages.length - 1];
+    },
+
+    range: function(ages) {
+        ages.sort();
+        return ages[ages.length - 1] - ages[0];
+    },
+
+    mean: function(ages) {
+        ages.sort();
+        return ages[(ages.length - 1) / 2];
+    },
+
+    media: function(ages) {
+        let sum = 0;
+        for(const age of ages) {
+            sum += age
+        }
+
+        return sum / ages.length;
+    },
+
+    mode: function(ages) {
+        let frecuencia = {};
+        let numeroMasRepetido;
+        let maxFrecuencia = -1;
+
+        for (let i = 0; i < ages.length; i++) {
+            let numero = ages[i];
+            if (frecuencia[numero] == null) {
+            frecuencia[numero] = 1;
+            } else {
+            frecuencia[numero]++;
+            }
+        }
+
+        for (let numero in frecuencia) {
+            if (frecuencia[numero] > maxFrecuencia) {
+            maxFrecuencia = frecuencia[numero];
+            numeroMasRepetido = numero;
+            }
+        }
+
+        return `{ 'Mode:' ${numeroMasRepetido}, 'Count:' ${maxFrecuencia} }`;
+    },
+    variance: function(ages) {
+        const media = ages.reduce((acc, age) => acc + age, 0) / ages.length;
+
+        const sum = ages.reduce((acc, age) => acc + ((age - media) ** 2), 0);
+
+        const varianza = sum / (ages.length - 1);
+
+        return varianza;
+    },
+
+    desv: function(variance) {
+        return Math.sqrt(variance);
+    },
+
+    distrFrecuency: function(ages) {
+        const frecuency = {};
+
+        let arrFrecuency = [];
+
+        ages.forEach((age) => {
+            if(frecuency[age]) {
+                frecuency[age]++;
+            } else {
+                frecuency[age] = 1;
+            }
+        });
+
+        let newFrecuency = Object.entries(frecuency);
+
+        for(const [keys, values] of newFrecuency) {
+            arrFrecuency.push([keys, values]);
+        }
+
+        return arrFrecuency;
+    }
+
+}
+
+console.log(`Count: ${statistics.count(ages)}`);
+console.log(`Sum: ${statistics.sum(ages)}`);
+console.log(`Min: ${statistics.min(ages)}`);
+console.log(`Max: ${statistics.max(ages)}`);
+console.log(`Range: ${statistics.range(ages)}`);
+console.log(`Mean: ${statistics.mean(ages)}`);
+console.log(`Media: ${statistics.media(ages)}`);
+console.log(`${statistics.mode(ages)}`);
+console.log(`Varianza: ${statistics.variance(ages)}`);
+console.log(`Desv. Tip: ${statistics.desv(statistics.variance(ages))}`);
+console.log(`Dist. Frec: ${statistics.distrFrecuency(ages)}`);
